@@ -2,20 +2,19 @@ local fileName = "AutoRejoinSigma.lua"
 
 -- The main script block that will be saved to your device
 local coreScriptContent = [====[
--- Wait until the game is completely loaded so the mobile executor doesn't crash
+-- Wait until the game is completely loaded so the executor doesn't crash
 if not game:IsLoaded() then
     game.Loaded:Wait()
 end
-task.wait(3) -- Safety buffer for mobile devices to stabilize after loading
+task.wait(3) -- Safety buffer to stabilize after loading
 
 local queue_on_teleport = queue_on_teleport or queueonteleport or (syn and syn.queue_on_teleport)
 
 -- ==========================================
--- 1. QUEUE FOR THE NEXT REJOIN (LIGHTWEIGHT)
+-- 1. QUEUE FOR THE NEXT REJOIN
 -- ==========================================
 if queue_on_teleport then
     pcall(function()
-        -- We pass a tiny, static string that will NEVER corrupt or grow in size
         queue_on_teleport([[
             repeat task.wait() until game:IsLoaded()
             task.wait(3)
@@ -48,10 +47,11 @@ local TeleportService = game:GetService("TeleportService")
 local Players = game:GetService("Players")
 local CoreGui = game:GetService("CoreGui")
 
--- Full server fallback
+-- Fallback: If the specific server is full/locked, join a new server
 if TeleportService then
     TeleportService.TeleportInitFailed:Connect(function(player, teleportResult, errorMessage)
         pcall(function()
+            task.wait(2)
             TeleportService:Teleport(game.PlaceId, player)
         end)
     end)
@@ -66,16 +66,21 @@ task.spawn(function()
             local robloxPromptGui = CoreGui:FindFirstChild("RobloxPromptGui")
             if robloxPromptGui then
                 local promptOverlay = robloxPromptGui:FindFirstChild("promptOverlay")
-                if promptOverlay and promptOverlay:FindFirstChild("ErrorPrompt") then
-                    detectedKick = true
+                -- FIX: We must check if the GUI is actually VISIBLE, not just loaded
+                if promptOverlay and promptOverlay.Visible then
+                    local errorPrompt = promptOverlay:FindFirstChild("ErrorPrompt")
+                    if errorPrompt and errorPrompt.Visible then
+                        detectedKick = true
+                    end
                 end
             end
         end)
 
         if detectedKick then
-            task.wait(2) -- Let the mobile client settle after getting kicked
+            task.wait(3) -- Let the client settle after the disconnect overlay appears
             
             pcall(function()
+                -- Prioritize rejoining the exact same server instance
                 if game.JobId ~= "" then
                     TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId, Players.LocalPlayer)
                 else
@@ -83,7 +88,7 @@ task.spawn(function()
                 end
             end)
             
-            break
+            break -- Stop the loop once a teleport is initiated
         end
     end
 end)
@@ -93,7 +98,7 @@ end)
 -- INITIALIZATION ENGINE (RUNS FIRST TIME)
 -- ==========================================
 local function InitializeSystem()
-    -- Save the file locally to the phone so it can be read seamlessly every single hop
+    -- Save the file locally so it can be read seamlessly every single hop
     if writefile then
         pcall(function()
             writefile(fileName, coreScriptContent)
