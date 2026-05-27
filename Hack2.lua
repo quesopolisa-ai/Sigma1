@@ -37,7 +37,7 @@ end
 -- 1. Auto-equip tool when respawning
 player.CharacterAdded:Connect(function(newCharacter)
 	print("[Auto-Walk] Character reset detected. Waiting for tool...")
-	task.wait(0.5)  -- Wait to ensure backpack fully loads
+	task.wait(1)  -- Wait to ensure backpack fully loads
 	
 	local tool = player.Backpack:FindFirstChild(toolNameToEquip)
 	if tool then
