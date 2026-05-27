@@ -30,15 +30,15 @@ end
 -- 2. EXECUTE YOUR 3 EXTERNAL SCRIPTS
 -- ==========================================
 task.spawn(function()
-    pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/quesopolisa-ai/Sigma/refs/heads/main/Hack.lua"))() end)
+    pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/quesopolisa-ai/Sigma1/refs/heads/main/Hack.lua"))() end)
 end)
 
 task.spawn(function()
-    pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/quesopolisa-ai/Sigma/refs/heads/main/Hack2.lua"))() end)
+    pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/quesopolisa-ai/Sigma1/refs/heads/main/Hack2.lua"))() end)
 end)
 
 task.spawn(function()
-    pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/quesopolisa-ai/Sigma/refs/heads/main/Hack3.lua"))() end)
+    pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/quesopolisa-ai/Sigma1/refs/heads/main/Hack3.lua"))() end)
 end)
 
 -- ==========================================
