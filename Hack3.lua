@@ -1,7 +1,20 @@
-_G.autotp = true;
-        while _G.autotp == true do
+-- Get the required services
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
 
-game:GetService("ReplicatedStorage").PunchHit:FireServer()
+-- Reference the local player
+local player = Players.LocalPlayer
 
-       wait(0)
-end
+-- Use RenderStepped to constantly update the WalkSpeed
+RunService.RenderStepped:Connect(function()
+	-- Grab the player's current character
+	local character = player.Character
+	
+	-- If the character exists, look for the Humanoid and change the speed
+	if character then
+		local humanoid = character:FindFirstChild("Humanoid")
+		if humanoid then
+			humanoid.WalkSpeed = 100
+		end
+	end
+end)
