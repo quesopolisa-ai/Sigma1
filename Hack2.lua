@@ -20,9 +20,8 @@ local function executeYourScript()
 	
 	-- 👇 PASTE YOUR CUSTOM SCRIPT BELOW THIS LINE 👇
 	
--- RemoteEvent
-
-game:GetService("ReplicatedStorage").Level200AscensionEvent:FireServer()
+    -- RemoteEvent
+    game:GetService("ReplicatedStorage").Level200AscensionEvent:FireServer()
 
 	-- 👆 PASTE YOUR CUSTOM SCRIPT ABOVE THIS LINE 👆
 end
@@ -64,18 +63,28 @@ while task.wait(0) do
 
 			-- Compare distances and walk to the closer one
 			if distanceToPos1 < distanceToPos2 then
-				humanoid:MoveTo(position1)
+                -- Heading to Position 1
+                if distanceToPos1 <= 5 then
+                    -- STOP WALKING: Tell humanoid to stay exactly where it is
+                    humanoid:MoveTo(rootPart.Position)
+                else
+                    humanoid:MoveTo(position1)
+                end
+                
 				hasExecutedAtPos2 = false -- Reset the lock since we moved away to Position 1
 			else
-				humanoid:MoveTo(position2)
-				
-				-- Check if we are close enough to Position 2 (within 10 studs horizontally)
-				if distanceToPos2 < 10 then
+                -- Heading to Position 2
+                if distanceToPos2 <= 10 then
+                    -- STOP WALKING: Tell humanoid to stay exactly where it is
+                    humanoid:MoveTo(rootPart.Position)
+
 					if not hasExecutedAtPos2 then
 						hasExecutedAtPos2 = true -- Lock it so it doesn't run continuously
 						executeYourScript()
 					end
 				else
+                    -- Not there yet, keep walking
+                    humanoid:MoveTo(position2)
 					-- Reset the lock if you get pushed away or leave the spot
 					hasExecutedAtPos2 = false
 				end
