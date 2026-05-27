@@ -1,7 +1,7 @@
 -- ==========================================
 -- CONFIGURATION
 -- ==========================================
-local PART_NAME = "str14ic" -- CHANGE THIS to the exact name of the part!
+local PART_NAME = "str12ic" -- CHANGE THIS to the exact name of the part!
 
 -- ==========================================
 -- 1. RESET ONCE AT THE START
@@ -20,7 +20,7 @@ end
 print("[Script] Waiting for respawn...")
 player.CharacterAdded:Wait()
 task.wait(1) -- Extra safety cushion for your character to fully load in
-print("[Script] Respawn complete. Launching both loops.")
+print("[Script] Respawn complete. Launching bring loop.")
 
 -- ==========================================
 -- 2. THE LOOP BRING PART (Runs in Background)
@@ -62,18 +62,3 @@ task.spawn(function()
         end
     end
 end)
-
--- ==========================================
--- 3. THE PERSISTENT BOSS LOOP (2s Cycle)
--- ==========================================
-print("[Boss Loop] Persistent loop started.")
-while true do
-    -- Spawn the White Boss immediately
-    local args1 = {
-        [1] = "White Boss"
-    }
-    game:GetService("ReplicatedStorage").BossSpawnRequest:FireServer(unpack(args1))
-
-    -- Wait 2 seconds to finish the 2 second cycle
-    task.wait(2)
-end
