@@ -3,7 +3,7 @@ print("[Auto-Walk] Script initialized! Walking loop active.")
 local player = game.Players.LocalPlayer
 
 -- Define your movement positions
-local position1 = Vector3.new(-500, 45, -632)
+local position1 = Vector3.new(-502, 49, -631)
 local position2 = Vector3.new(193, 25, -344)
 
 -- Define the EXACT name of your tool
